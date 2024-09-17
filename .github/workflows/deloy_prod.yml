@@ -30,7 +30,10 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            echo "LOL"
+            git checkout main
+            git fetch
+            git pull
+            echo "SUCCESS DEPLOY HUI SOSA LENAR"
           
           
           
