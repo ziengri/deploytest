@@ -1,36 +1,23 @@
-# This is a basic workflow to help you get started with Actions
+name: On Branch Create from test
 
-name: create_site_from_branch
-
-# Controls when the workflow will run
 on:
   create:
-    types: [branches]
     branches:
-      base: test
+      - 'test/**'  # This will trigger on any branch created from 'test'
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  on-branch-create:
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Deploy via ssh
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
-            echo "$GITHUB_REF"
-          
-          
-          
-      
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get branch name
+        id: branch-name
+        run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+
+      - name: Run script on branch creation
+        run: |
+          echo "New branch created: ${{ steps.branch-name.outputs.BRANCH_NAME }}"
+          # Run your bash script with the new branch name as an argument
+        shell: bash
