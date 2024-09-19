@@ -1,0 +1,23 @@
+name: On Branch Create from test
+
+on:
+  create:
+    branches:
+      - 'test/**'  # This will trigger on any branch created from 'test'
+
+jobs:
+  on-branch-create:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get branch name
+        id: branch-name
+        run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+
+      - name: Run script on branch creation
+        run: |
+          echo "New branch created: ${{ steps.branch-name.outputs.BRANCH_NAME }}"
+          # Run your bash script with the new branch name as an argument
+        shell: bash
