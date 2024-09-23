@@ -9,9 +9,6 @@ jobs:
   notify-branch-deletion:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       - name: Output deleted branch name
         run: |
           echo "Название удаленной ветки: ${{ github.event.ref }}"
